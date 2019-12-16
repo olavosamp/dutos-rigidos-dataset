@@ -1,0 +1,8 @@
+# Ignore all
+*.*
+
+# Except .py files, jupyter notebooks and .csv annotation files
+!.gitignore
+!*.py
+!*.ipynb
+!./json_files/*.json
