@@ -18,6 +18,8 @@ petro_class_table = ["dano",    # Position in list equates to translation priori
                      "cruz",    #
                      "algas",   #
                      "duto",    #
+                     "peixe",
+                     "variacao"
 ]
 
 class_priority_table = petro_class_table.copy()
@@ -29,14 +31,13 @@ class_translation_table = {
                             "dano-duvida":  petro_class_table[0],
                             "dano":         petro_class_table[0],
                             "duto":         petro_class_table[5],
-                            "variacao":     UNUSED_CLASS,
+                            "variacao":     petro_class_table[7],
                             "metal":        petro_class_table[2],
                             "planta":       petro_class_table[4],
                             "sucata":       petro_class_table[2],
-                            "peixe":        UNUSED_CLASS,
+                            "peixe":        petro_class_table[6],
                             "nada":         UNUSED_CLASS,
 }
-
 
 # Videos formats supported by the package
 #video_formats = [ "mp4" ]
