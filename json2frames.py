@@ -145,8 +145,9 @@ def convert_petro_tags(tagList):
 
     newTagList = []
     for tag in tagList:
-        if tag in commons.class_translation_table.keys():
-            newTagList.append(commons.class_translation_table[tag])
+        # if tag in commons.class_translation_table.values():
+        #     newTagList.append(commons.class_translation_table[tag])
+        newTagList.extend(commons.class_translation_table.get(tag, [commons.UNUSED_CLASS]))
     return newTagList
 
 
@@ -170,22 +171,29 @@ def generate_frames_and_targets(targets, frameid, tgs, frame_rate, video, target
                     if square is True:
                         border = int((frame.shape[1] - frame.shape[0])/2)
                         frame = frame[:, border:frame.shape[1]-border, :]
-                        
+
                     targets.loc[frameid] = tgs.loc[i]
                     target_name = str(frameid)+"_"+video_name+"_" + \
                         seconds2string(i).replace(":", "-")+"_"+str(j)+".jpg"
-                    
+
                     folderName = video_name
-                    targetName = None
-                    for tag in commons.tags:
-                        if targets.loc[frameid, tag] == 1:
-                            targetName = commons.class_translation_table[tag]
-                            break
-                    if targetName != None and targetName != commons.UNUSED_CLASS:
-                        frameDestPath = Path("/".join([target_path, targetName, folderName, target_name]))
-                        create_folder(frameDestPath.parent)
-                        errWrite = cv2.imwrite(str(frameDestPath), frame)
-                    else:
+                    dropFlag = True
+                    for targetName in commons.class_priority_table:
+                        tags = convert_petro_tags(targetName)
+                        labelSum = 0
+                        # print("Tags\n", tags)
+                        for subTag in tags: # Check if any translated tag equals 1 in target table
+                            # print(subTag)
+                            if subTag in targets.columns:
+                                labelSum += int(targets.loc[frameid, subTag])
+
+                        # if targets.loc[frameid, tag] == 1:
+                        if labelSum >= 1:
+                            frameDestPath = Path("/".join([target_path, targetName, folderName, target_name]))
+                            create_folder(frameDestPath.parent)
+                            errWrite = cv2.imwrite(str(frameDestPath), frame)
+                            dropFlag = False
+                    if dropFlag:
                         indexToDrop.append(frameid)
                     frameid += 1
     return targets, frameid

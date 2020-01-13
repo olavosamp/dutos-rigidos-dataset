@@ -12,7 +12,8 @@ clean_duct_frame_rate = 1
 
 confusion_time = 1
 
-petro_class_table = ["dano",    # Position in list equates to translation priority
+petro_class_table = [
+                     "dano",    # Position in list equates to translation priority
                      "anodo",   # index 0 is highest priority, last index is lowest
                      "sucata",  #
                      "cruz",    #
@@ -27,16 +28,14 @@ class_priority_table = petro_class_table.copy()
 UNUSED_CLASS = "UNUSED_CLASS"
 
 class_translation_table = {
-                            "anodo":        petro_class_table[1],
-                            "dano-duvida":  petro_class_table[0],
-                            "dano":         petro_class_table[0],
-                            "duto":         petro_class_table[5],
-                            "variacao":     petro_class_table[7],
-                            "metal":        petro_class_table[2],
-                            "planta":       petro_class_table[4],
-                            "sucata":       petro_class_table[2],
-                            "peixe":        petro_class_table[6],
-                            "nada":         UNUSED_CLASS,
+                            petro_class_table[0]:      ["dano", "dano-duvida"],
+                            petro_class_table[1]:      ["anodo"],
+                            petro_class_table[2]:      ["metal", "sucata"],
+                            petro_class_table[4]:      ["planta"],
+                            petro_class_table[5]:      ["duto"],
+                            petro_class_table[6]:      ["peixe"],
+                            petro_class_table[7]:      ["variacao"],
+                            # UNUSED_CLASS:              "nada",
 }
 
 # Videos formats supported by the package
